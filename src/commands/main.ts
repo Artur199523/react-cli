@@ -1,19 +1,26 @@
-import {program} from "commander"
+import {Command} from "commander"
+
+import {log, USER_AGENT} from "../utils/command-helpers.js";
+import {getPackageJson} from "../utils/file-manager.js";
+
+import {createComponentGenerateCommand} from "./generate/index.js";
 import {createInitCommand} from "./init/index.js";
 
-import {USER_AGENT} from "../utils/command-helpers.js";
-
-const mainCommand = () => {
-    console.log("main command testong")
+const mainCommand = async () => {
+    const {name, version} = await getPackageJson()
+    log(USER_AGENT(name, version))
 }
 
-export const createMainCommand = () => {
+export const createMainCommand = async () => {
+    const program = new Command();
+
     createInitCommand(program);
+    createComponentGenerateCommand(program);
 
     program
-        .version(USER_AGENT, '-v, --version')
+        .option('-v, --version', 'output the current version')
         .showSuggestionAfterError(true)
         .action(mainCommand)
 
-    program.parse(process.argv);
+    await program.parseAsync(process.argv)
 }

@@ -1,8 +1,8 @@
 import path from 'path'
 import chalk from 'chalk';
 
-import {writeComponentFiles} from '../utils/fileManager.js';
-import {createComponentTemplate, createCSSTemplate} from '../utils/templates.js';
+import {createComponentTemplate, createCSSTemplate} from '../../utils/templates.js';
+import {writeComponentFiles} from '../../utils/file-manager.js';
 
 // Define the "generate" command logic
 export const generateComponent = (componentName: string, options: any) => {

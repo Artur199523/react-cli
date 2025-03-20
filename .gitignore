@@ -1,5 +1,5 @@
-dist
 .idea
-node_modules
+dist
+/node_modules
 
 react-cli.config.json
