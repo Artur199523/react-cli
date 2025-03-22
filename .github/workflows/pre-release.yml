@@ -1,0 +1,73 @@
+name: prerelease
+on:
+  push:
+    branches:
+      - release
+jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install core dependencies
+        run: npm i --no-audit
+
+      - name: Get Current Version
+        id: version
+        run: |
+          version=$(jq -r '.version' package.json)
+          echo "current_version=$version" >> $GITHUB_OUTPUT
+
+      - name: Extract tag and version
+        id: extract
+        run: |-
+          branch_name=${{ github.head_ref }}
+          major=$(echo ${{ steps.version.current_version }} | cut -d. -f1)
+          minor=$(echo ${{ steps.version.current_version }} | cut -d. -f2)
+          patch=$(echo ${{ steps.version.current_version }} | cut -d. -f3)
+
+          if [[ "$branch_name" == major/* ]]; then
+            major=$((major + 1))
+            minor=0
+            patch=0
+            tag="v$major.0.0"
+          elif [[ "$branch_name" == feature/* ]]; then
+            minor=$((minor + 1))
+            patch=0
+            tag="v$major.$minor.0"
+          elif [[ "$branch_name" == bug/* || "$branch_name" == update/* ]]; then
+            patch=$((patch + 1))
+            tag="v$major.$minor.$patch"
+          fi
+
+          echo "new_version=$major.$minor.$patch" >> $GITHUB_OUTPUT
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+        
+      - name: Log New Version & Tag
+        run: |-
+          echo "New Version: ${{ steps.extract.outputs.new_vetsion }}"
+          echo "Tag: ${{ steps.extract.outputs.tag }}"
+
+      - name: Update package.json Version
+        run: |-
+          new_version = ${{ steps.extract.outputs.version }}
+          echo "Updating package.json to version $new_version"
+          jq ".version = \"$new_version\"" package.json > tmp.json && mv tmp.json package.json
+          echo "Updated package.json"
+          cat package.json
+
+      - name: Setup git user configs
+        run: |- 
+            git config --global user.name github-actions
+            git config --global user.email github-actions@github.com
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add package.json
+          git commit -m "Bump version to ${{ steps.extract.outputs.new_version }}"
+          git push
