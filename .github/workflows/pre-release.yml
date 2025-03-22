@@ -27,8 +27,7 @@ jobs:
       - name: Extract tag and version
         id: extract
         run: |-
-          ref=${{ github.ref }}
-          branch_name=${ref:11}
+          branch_name=${{github.head_ref}}
           major=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f1)
           minor=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f2)
           patch=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f3)
