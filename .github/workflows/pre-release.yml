@@ -36,7 +36,6 @@ jobs:
         id: determine-bump
         run: |-
           branch_name="${{ github.event.pull_request.head.ref }}"
-          echo "Source branch name detected: $branch_name"
           if [[ "$branch_name" == major/* ]]; then
             bump_type="major"
           elif [[ "$branch_name" == feature/* ]]; then
@@ -56,6 +55,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Display updated package.json
         run: cat ./package.json
-      - name: Log new tag
-        run: | 
-          echo "New tag: ${{ steps.determine-bump.outputs.newTag }}"
