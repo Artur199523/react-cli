@@ -24,7 +24,7 @@ jobs:
       - name: Extract tag and version
         id: extract
         run: |-
-          branch_name=$(git log -1 --pretty=format:'%s' | grep -oE "[a-zA-Z0-9_\.\_/\\-]+")
+          branch_name="${{ github.event.pull_request.head.ref }}"
           echo "Source branch name detected: $branch_name"
 
           if [[ "$branch_name" == major/* ]]; then
