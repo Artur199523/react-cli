@@ -1,6 +1,9 @@
 name: prerelease
 on:
-  push:
+  pull_request_review_comment:
+    branches:
+      - release
+  pull_request:
     branches:
       - release
 jobs:
@@ -70,4 +73,4 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add package.json
           git commit -m "Bump version to ${{ steps.extract.outputs.new_version }}"
-          git push
+          git push origin ${{ github.ref_name }}
