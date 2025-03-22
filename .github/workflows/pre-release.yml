@@ -73,4 +73,4 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add package.json
           git commit -m "Bump version to ${{ steps.extract.outputs.new_version }}"
-          git push origin ${{ github.ref_name }}
+          git push origin ${{ github.head_ref}}
