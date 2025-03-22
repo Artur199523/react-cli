@@ -24,7 +24,8 @@ jobs:
       - name: Extract tag and version
         id: extract
         run: |-
-      
+          branch_name=${{github.head_ref}}
+
           if [[ "$branch_name" == major/* ]]; then
              bump="major"
           elif [[ "$branch_name" == feature/* ]]; then
