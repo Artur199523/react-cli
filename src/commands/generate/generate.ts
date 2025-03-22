@@ -3,6 +3,7 @@ import chalk from 'chalk'
 
 import { createComponentTemplate, createCSSTemplate } from '../../utils/templates.js'
 import { writeComponentFiles } from '../../utils/file-manager.js'
+import { error } from '../../utils/command-helpers'
 
 // Define the "generate" command logic
 export const generateComponent = (componentName: string, options: any) => {
@@ -19,7 +20,7 @@ export const generateComponent = (componentName: string, options: any) => {
     writeComponentFiles(componentDir, componentName, componentCode, cssCode)
 
     console.log(chalk.green(`✓ Component "${componentName}" created successfully.`))
-  } catch (error: any) {
-    console.error(chalk.red(`✗ Error: ${error.message}`))
+  } catch (err: unknown) {
+    error(`✗ Error:`, err)
   }
 }

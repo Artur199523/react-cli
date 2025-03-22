@@ -123,7 +123,7 @@ export const initConfig = async () => {
     return
   }
 
-  const configPath = join(rootDirectory as string, CONFIG_FILE)
+  const configPath = join(rootDirectory, CONFIG_FILE)
 
   const existingConfig = loadConfiguration(configPath)
 

@@ -13,10 +13,12 @@
   },
   "scripts": {
     "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "format": "npm run _format -- --write",
-    "format:check": "npm run _format -- --check"
+    "format:check": "npm run _format -- --check",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc --watch",
+    "lint": "eslint --cache \"src/**/*.{js,ts}\" \"*.{js,ts}\""
   },
   "license": "MIT",
   "dependencies": {
@@ -30,11 +32,21 @@
     "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
+    "@eslint/compat": "^1.2.7",
+    "@eslint/js": "^9.23.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/chalk": "^2.2.4",
     "@types/commander": "^2.12.5",
     "@types/node": "^22.13.10",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-n": "^17.16.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.27.0"
   }
 }
