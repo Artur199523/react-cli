@@ -24,10 +24,10 @@ jobs:
       - name: Extract tag and version
         id: extract
         run: |-
-          branch_name=${{ github.head_ref }}
-          major=$(echo ${{ steps.version.current_version }} | cut -d. -f1)
-          minor=$(echo ${{ steps.version.current_version }} | cut -d. -f2)
-          patch=$(echo ${{ steps.version.current_version }} | cut -d. -f3)
+          branch_name=${{ github.ref_name }}
+          major=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f1)
+          minor=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f2)
+          patch=$(echo ${{ steps.version.outputs.current_version }} | cut -d. -f3)
 
           if [[ "$branch_name" == major/* ]]; then
             major=$((major + 1))
@@ -48,12 +48,12 @@ jobs:
         
       - name: Log New Version & Tag
         run: |-
-          echo "New Version: ${{ steps.extract.outputs.new_vetsion }}"
+          echo "New Version: ${{ steps.extract.outputs.new_version }}"
           echo "Tag: ${{ steps.extract.outputs.tag }}"
 
       - name: Update package.json Version
         run: |-
-          new_version = ${{ steps.extract.outputs.version }}
+          new_version=${{ steps.extract.outputs.new_version }}
           echo "Updating package.json to version $new_version"
           jq ".version = \"$new_version\"" package.json > tmp.json && mv tmp.json package.json
           echo "Updated package.json"
