@@ -1,6 +1,6 @@
 {
   "name": "react-cli",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "description": "CLI for creating React components",
   "author": "Arthur & Yura",
   "type": "module",
