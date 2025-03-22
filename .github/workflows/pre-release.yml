@@ -3,62 +3,59 @@ on:
   push:
     branches:
       - release
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
-
       - name: Install core dependencies
         run: npm ci --no-audit
-      - run: npm run build
+      - name: Build the project
+        run: npm run build
 
   bump-package-version:
-      name: Bump Version
-      runs-on: ubuntu-latest
-      needs: [ build ]
-      steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+    name: Bump Version
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
-
-      - name: Cat package.json
+      - name: Display package.json
         run: cat ./package.json
-
-      - name: Extract tag and version
-        id: extract
+      - name: Determine bump type
+        id: determine-bump
         run: |-
           branch_name="${{ github.event.pull_request.head.ref }}"
           echo "Source branch name detected: $branch_name"
-
           if [[ "$branch_name" == major/* ]]; then
-             bump="major"
+            bump_type="major"
           elif [[ "$branch_name" == feature/* ]]; then
-             bump="minor"
+            bump_type="minor"
           elif [[ "$branch_name" == bug/* || "$branch_name" == update/* ]]; then
-             bump="patch"
+            bump_type="patch"
           else
-            bump="patch" # Default fallback
+            bump_type="patch" # Default fallback
           fi
-
-          echo "bump=$bump" >> $GITHUB_OUTPUT
-
-      - name: Bump Version
+          echo "bump_type=$bump_type" >> $GITHUB_OUTPUT
+      - name: Bump Package Version
         uses: phips28/gh-action-bump-version@master
         with:
           tag-prefix: 'v'
-          default: ${{ steps.extract.outputs.bump }}
+          default: ${{ steps.determine-bump.outputs.bump_type }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 'cat package.json'
+      - name: Display updated package.json
         run: cat ./package.json
-
-      - name: 'Output Step'
-        env:
-           NEW_TAG: ${{ steps.extract.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
+      - name: Log new tag
+        run: | 
+          echo "New tag: ${{ steps.determine-bump.outputs.newTag }}"
