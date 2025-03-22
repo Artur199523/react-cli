@@ -15,12 +15,6 @@ jobs:
       - name: Install core dependencies
         run: npm i --no-audit
 
-      - name: Get Current Version
-        id: version
-        run: |
-          version=$(jq -r '.version' package.json)
-          echo "current_version=$version" >> $GITHUB_OUTPUT
-
       - name: Extract tag and version
         id: extract
         run: |-
@@ -50,25 +44,3 @@ jobs:
           default: ${{ steps.extract.outputs.bump }} # Dynamic bump type
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-#      - name: Update package.json Version
-#        run: |-
-#          new_version=${{ steps.extract.outputs.new_version }}
-#          echo "Updating package.json to version $new_version"
-#          jq ".version = \"$new_version\"" package.json > tmp.json && mv tmp.json package.json
-#          echo "Updated package.json"
-#          cat package.json
-#
-#      - name: Setup git user configs
-#        run: |-
-#            git config --global user.name github-actions
-#            git config --global user.email github-actions@github.com
-#
-#      - name: Commit and Push Changes
-#        run: |
-#          git config --global user.name "github-actions"
-#          git config --global user.email "github-actions@github.com"
-#          git add package.json
-#          git commit -m "Bump version to ${{ steps.extract.outputs.new_version }}"
-#          git push origin ${{ github.head_ref}}
