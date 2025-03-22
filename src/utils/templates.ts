@@ -11,10 +11,10 @@ const ${componentName} = () => {
 };
 
 export default ${componentName};
-`;
+`
 
 export const createCSSTemplate = (componentName: string) => `
 .${componentName} {
   /* Add styles for ${componentName} here */
 }
-`;
+`

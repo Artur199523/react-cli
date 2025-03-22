@@ -12,8 +12,11 @@
     "react-cli": "bin/index.js"
   },
   "scripts": {
+    "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "format": "npm run _format -- --write",
+    "format:check": "npm run _format -- --check"
   },
   "license": "MIT",
   "dependencies": {
@@ -31,6 +34,7 @@
     "@types/chalk": "^2.2.4",
     "@types/commander": "^2.12.5",
     "@types/node": "^22.13.10",
+    "prettier": "^3.5.3",
     "typescript": "^5.8.2"
   }
 }
