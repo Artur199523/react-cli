@@ -1,6 +1,6 @@
 {
   "name": "react-cli-ay",
-  "version": "7.1.6",
+  "version": "7.1.7",
   "description": "CLI for creating React components",
   "author": "Arthur & Yura",
   "type": "module",
