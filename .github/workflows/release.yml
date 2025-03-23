@@ -1,41 +1,48 @@
-name: Publish to GitHub Package Registry
-
+name: release
 on:
   push:
     branches:
       - main
 
 jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: navikt/github-app-token-generator@v1.0.0
+        id: get-token
+        with:
+          private-key: ${{ secrets.TOKENS_PRIVATE_KEY }}
+          app-id: ${{ secrets.TOKENS_APP_ID }}
+      - uses: GoogleCloudPlatform/release-please-action@v4
+        id: release
+        with:
+          token: ${{ steps.get-token.outputs.token }}
+          release-type: node
+          package-name: react-cli
+
   publish:
-    name: Publish Package
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
-      actions: write
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
+      id-token: write
+      contents: write
+      pull-requests: write
+    needs: create-release
+    if: ${{ needs.create-release.outputs.release_created }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.20.1
-          registry-url: https://npm.pkg.github.com/
-          scope: '@artur199523'
+          cache: npm
+          registry-url: https://registry.npmjs.org/
 
-      - name: Get Version from Tag
-        id: get-version
-        run: |
-          # Extract the version from the Git tag
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Publishing version: $VERSION"
+      - name: Install core dependencies
+        run: npm ci --no-audit
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Publish Package
-        run: npm publish --access public
+      - run: npm publish --provenance
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
