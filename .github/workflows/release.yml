@@ -47,7 +47,7 @@ jobs:
             echo "release_created=true" >> $GITHUB_OUTPUT
           else
             echo "release_created=false" >> $GITHUB_OUTPUT
-
+          fi
   publish:
     runs-on: ubuntu-latest
     permissions:
