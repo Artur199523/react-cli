@@ -1,6 +1,6 @@
 {
   "name": "react-cli-ay",
-  "version": "7.1.9",
+  "version": "7.1.10",
   "description": "CLI for creating React components",
   "author": "Arthur & Yura",
   "type": "module",
@@ -16,8 +16,8 @@
     "react-cli-ay": "bin/index.js"
   },
   "files": [
-    "dist",
-    "bin"
+    "/dist",
+    "/bin"
   ],
   "scripts": {
     "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
