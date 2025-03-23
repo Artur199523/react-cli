@@ -15,6 +15,10 @@
     "rcli": "bin/index.js",
     "react-cli-ay": "bin/index.js"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "scripts": {
     "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
     "build": "tsc",
