@@ -16,8 +16,8 @@
     "react-cli-ay": "bin/index.js"
   },
   "files": [
-    "dist",
-    "bin"
+    "/dist",
+    "/bin"
   ],
   "scripts": {
     "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
