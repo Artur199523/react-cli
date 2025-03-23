@@ -7,6 +7,13 @@
   "engines": {
     "node": ">=18.20.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Artur199523/react-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@artur199523"
+  },
   "bin": {
     "rcli": "bin/index.js",
     "react-cli": "bin/index.js"
