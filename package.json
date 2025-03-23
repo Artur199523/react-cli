@@ -1,5 +1,5 @@
 {
-  "name": "@artur199523/react-cli",
+  "name": "react-cli",
   "version": "7.1.1",
   "description": "CLI for creating React components",
   "author": "Arthur & Yura",
@@ -10,9 +10,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Artur199523/react-cli.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@artur199523"
   },
   "bin": {
     "rcli": "bin/index.js",
