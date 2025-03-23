@@ -66,6 +66,9 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org/
 
+      - name: Build the project
+        run: npm run build
+
       - name: Install core dependencies
         run: npm ci --no-audit
 
