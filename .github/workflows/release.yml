@@ -32,10 +32,10 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Publishing version: $VERSION"
 
-#      - name: Install Dependencies
-#        run: npm ci
-#
-#      - name: Publish Package
-#        run: npm publish --access public
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Publish Package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
