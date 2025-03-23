@@ -10,17 +10,33 @@ jobs:
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.1
+
+      - name: Get version from package.json
+        id: get-version
+        run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+
       - uses: navikt/github-app-token-generator@v1.0.0
         id: get-token
         with:
           private-key: ${{ secrets.TOKENS_PRIVATE_KEY }}
           app-id: ${{ secrets.TOKENS_APP_ID }}
-      - uses: GoogleCloudPlatform/release-please-action@v4
-        id: release
+
+      - name: Create GitHub release
+        id: create-release
+        uses: actions/create-release@v1
         with:
-          token: ${{ steps.get-token.outputs.token }}
-          release-type: node
-          package-name: react-cli
+          tag_name: v${{ steps.get-version.outputs.version }}
+          release_name: "Release v${{ steps.get-version.outputs.version }}"
+          body: "Automatically created release for version v${{ steps.get-version.outputs.version }}."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
     runs-on: ubuntu-latest
