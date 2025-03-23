@@ -1,5 +1,5 @@
 {
-  "name": "react-cli",
+  "name": "react-cli-ay",
   "version": "7.1.6",
   "description": "CLI for creating React components",
   "author": "Arthur & Yura",
@@ -13,7 +13,7 @@
   },
   "bin": {
     "rcli": "bin/index.js",
-    "react-cli": "bin/index.js"
+    "react-cli-ay": "bin/index.js"
   },
   "scripts": {
     "_format": "prettier --log-level=warn \"src/**/*.{js,ts}\"",
