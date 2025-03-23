@@ -17,8 +17,10 @@ jobs:
           node-version: 18.20.1
 
       - name: Get version from package.json
-        id: get-version
-        run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+        id: version
+        run: |
+          version=$(jq -r '.version' package.json)
+          echo "current_version=$version" >> $GITHUB_OUTPUT
 
       - uses: navikt/github-app-token-generator@v1.0.0
         id: get-token
@@ -30,9 +32,9 @@ jobs:
         id: create-release
         uses: actions/create-release@v1
         with:
-          tag_name: v${{ steps.get-version.outputs.version }}
-          release_name: "Release v${{ steps.get-version.outputs.version }}"
-          body: "Automatically created release for version v${{ steps.get-version.outputs.version }}."
+          tag_name: v${{ steps.version.outputs.current_version }}
+          release_name: "Release v${{ steps.version.outputs.current_version }}"
+          body: "Automatically created release for version v${{ steps.version.outputs.current_version }}."
           draft: false
           prerelease: false
         env:
