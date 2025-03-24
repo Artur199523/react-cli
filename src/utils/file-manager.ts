@@ -16,7 +16,7 @@ export const ensureDirectoryExists = (dir: string) => {
 export const writeComponentFiles = (componentDir: string, componentName: string, componentCode: any, cssCode: any) => {
   ensureDirectoryExists(componentDir)
 
-  // Write the JSX file
+  // Write the JSX file dsfgndfg
   fs.writeFileSync(path.join(componentDir, `${componentName}.jsx`), componentCode.trim())
 
   if (cssCode) {
