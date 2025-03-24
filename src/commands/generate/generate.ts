@@ -3,7 +3,7 @@ import chalk from 'chalk'
 
 import { createComponentTemplate, createCSSTemplate } from '../../utils/templates.js'
 import { writeComponentFiles } from '../../utils/file-manager.js'
-import { error } from '../../utils/command-helpers'
+import { error } from '../../utils/command-helpers.js'
 
 // Define the "generate" command logic
 export const generateComponent = (componentName: string, options: any) => {
