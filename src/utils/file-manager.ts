@@ -33,7 +33,7 @@ export const findProjectRoot = (markerFiles: string[]) => {
   const rootDirectory = path.parse(currentDirectory).root
 
   // Traverse up the directory tree until the root
-  while (currentDirectory === rootDirectory) {
+  while (currentDirectory !== rootDirectory) {
     for (const file of markerFiles) {
       // Check if any of the marker files exists in the current directory
       if (existsSync(join(currentDirectory, file))) {
